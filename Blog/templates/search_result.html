@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+
+<h1>Here is the search Result</h1>
+<section class="featured-posts no-padding-top">
+  <div class="container">
+    <!-- Post-->
+    {% for post in queryset %}
+    <div class="row d-flex align-items-stretch">
+
+      <div class="text col-lg-7">
+        <div class="text-inner d-flex align-items-center">
+          <div class="content">
+            <header class="post-header">
+              <!-- <div class="category">
+                {% for cat in obj.categories.all %}
+                <a href="#">{{cat}}</a>
+                {%endfor%}
+              </div> -->
+              <a href="{{ post.get_absolute_url }}">
+                <h2 class="h4">{{ post.title }}</h2></a>
+            </header>
+            <p>{{post.overview}}</p>
+            <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+                <div class="avatar"><img src="{{post.author.profile_picture.url}}" alt="..." class="img-fluid"></div>
+                <div class="title"><span>{{post.author.user.username}}</span></div></a>
+              <div class="date"><i class="icon-clock"></i>{{post.timestamp|timesince}} ago</div>
+              <div class="comments"><i class="icon-comment"></i>{{post.comment_count}}</div>
+            </footer>
+          </div>
+        </div>
+      </div>
+      <div class="image col-lg-5"><img src="{{post.img.url}} " alt="..."></div>
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+
+{% endblock content %}

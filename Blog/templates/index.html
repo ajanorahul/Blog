@@ -76,7 +76,7 @@
       <div class="container">
         <header>
           <h2>Latest from the blog</h2>
-          <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          <p class="text-big">Checkout lastest blog</p>
         </header>
         <div class="row">
           {% for obj in latest %}
@@ -113,7 +113,7 @@
               <form action="." method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                  <input type="email" name="email" id="email" placeholder="Type your email address">
+                  <input type="email" name="email" required  id="email" placeholder="Type your email address">
                   <button type="submit" class="submit">Subscribe</button>
                 </div>
               </form>
