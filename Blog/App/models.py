@@ -5,6 +5,24 @@ from tinymce.models import HTMLField
 
 User = get_user_model()
 
+class PostView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    post = models.ForeignKey(
+        'Post', related_name='comments', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
 # Create your models here.
 class Author(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -25,8 +43,8 @@ class Post(models.Model):
     content = HTMLField()
 
     timestamp =  models.DateTimeField(auto_now_add=True)
-    comment_count = models.IntegerField(default=0)
-    view_count = models.IntegerField(default=0)
+    # comment_count = models.IntegerField(default=0)
+    # view_count = models.IntegerField(default=0)
     author  = models.ForeignKey(Author,on_delete= models.CASCADE)
     img = models.ImageField()
     categories = models.ManyToManyField(Category)
@@ -46,16 +64,13 @@ class Post(models.Model):
         })
 
     @property
-
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
 
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.TextField()
-    post = models.ForeignKey(
-        'Post', related_name='comments', on_delete=models.CASCADE)
+    @property
+    def view_count(self):
+        return PostView.objects.filter(post=self).count()
 
-    def __str__(self):
-        return self.user.username
+    @property
+    def comment_count (self):
+        return Comment.objects.filter(post=self).count()
